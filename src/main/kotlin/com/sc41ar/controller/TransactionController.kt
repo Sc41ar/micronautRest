@@ -4,6 +4,7 @@ import com.sc41ar.domains.Transaction
 import com.sc41ar.domains.enums.TransactionCategoryEnum
 import com.sc41ar.repository.TransactionRepository
 import com.sc41ar.service.TransactionService
+import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Body
@@ -23,17 +24,26 @@ open class TransactionController(
 
     @Get("/getall")
     open fun getAll(
-        @QueryValue("category") category: TransactionCategoryEnum,
+        @QueryValue("category") category: TransactionCategoryEnum = TransactionCategoryEnum.UNKNOWN,
         @QueryValue("user_id") userId: Long,
         @QueryValue("page") page: Int,
         @QueryValue("size") size: Int
     ): HttpResponse<List<Transaction>?> {
 
-        var allTransactions = transactionRepository.findByCategoryAndUser_idOrderByDate(
-            category,
-            userId,
-            pageable = Pageable.from(page, size)
-        )
+        var allTransactions: Page<Transaction>
+
+        when (category) {
+            TransactionCategoryEnum.UNKNOWN -> allTransactions =
+                Page.of(transactionRepository.findAll(), Pageable.from(page, size), null)
+
+            else -> allTransactions = transactionRepository.findByCategoryAndUser_idOrderByDate(
+                category,
+                userId,
+                pageable = Pageable.from(page, size)
+            )
+        }
+
+
 
         if (!allTransactions.isEmpty)
             return HttpResponse.ok(allTransactions.content)

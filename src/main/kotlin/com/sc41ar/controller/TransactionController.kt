@@ -30,25 +30,10 @@ open class TransactionController(
         @QueryValue("size") size: Int
     ): HttpResponse<List<Transaction>?> {
 
-        var allTransactions: Page<Transaction>
-
-        when (category) {
-            TransactionCategoryEnum.UNKNOWN -> allTransactions =
-                Page.of(transactionRepository.findAll(), Pageable.from(page, size), null)
-
-            else -> allTransactions = transactionRepository.findByCategoryAndUser_idOrderByDate(
-                category,
-                userId,
-                pageable = Pageable.from(page, size)
-            )
-        }
+        var allTransactions: Page<Transaction> = transactionService.findTransactions(category, userId, page, size)
 
 
-
-        if (!allTransactions.isEmpty)
-            return HttpResponse.ok(allTransactions.content)
-
-        return HttpResponse.badRequest()
+        return HttpResponse.ok(allTransactions.content)
     }
 
     @Post("/save")

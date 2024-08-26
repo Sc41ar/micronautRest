@@ -12,4 +12,5 @@ import java.util.*
 @Repository
 interface TransactionRepository: CrudRepository<Transaction, Long> {
     fun findByCategoryAndUser_idOrderByDate(categort:TransactionCategoryEnum, userId: Long, pageable: Pageable) : Page<Transaction>
+    fun findByUser_idOrderByDate(userId: Long, pageable: Pageable) : Page<Transaction>
 }

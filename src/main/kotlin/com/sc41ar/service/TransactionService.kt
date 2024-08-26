@@ -5,6 +5,9 @@ import com.sc41ar.domains.User
 import com.sc41ar.domains.enums.TransactionCategoryEnum
 import com.sc41ar.repository.TransactionRepository
 import com.sc41ar.repository.UserRepository
+import io.micronaut.data.model.Page
+import io.micronaut.data.model.Pageable
+import io.micronaut.http.annotation.QueryValue
 import jakarta.inject.Singleton
 
 @Singleton
@@ -12,6 +15,28 @@ open class TransactionService(
     private val transactionRepository: TransactionRepository,
     private val userRepository: UserRepository
 ) {
+
+    fun findTransactions(
+        category: TransactionCategoryEnum,
+        userId: Long,
+        page: Int,
+        size: Int
+    ): Page<Transaction> {
+        var allTransactions: Page<Transaction>
+
+        when (category) {
+            TransactionCategoryEnum.UNKNOWN -> allTransactions =
+                transactionRepository.findByUser_idOrderByDate(userId, pageable = Pageable.from(page, size))
+
+            else -> allTransactions = transactionRepository.findByCategoryAndUser_idOrderByDate(
+                category,
+                userId,
+                pageable = Pageable.from(page, size)
+            )
+        }
+
+        return allTransactions
+    }
 
 
     fun save(amount: Long, category: String, userId: Long): Transaction {

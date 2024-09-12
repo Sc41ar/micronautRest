@@ -7,7 +7,6 @@ import com.sc41ar.repository.TransactionRepository
 import com.sc41ar.repository.UserRepository
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
-import io.micronaut.http.annotation.QueryValue
 import jakarta.inject.Singleton
 
 @Singleton

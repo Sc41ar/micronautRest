@@ -34,7 +34,6 @@ class JWTGenerator  {
         } catch (e: Exception) {
             return false
         }
-
     }
 
 }

@@ -2,7 +2,7 @@ version: "2"
 services:
   backend:
     build: .
-    image: test3
+    image: app
     environment:
       - DATASOURCES_DEFAULT_URL=jdbc:postgresql://db:5432/root
       - DATASOURCES_DEFAULT_USERNAME=root

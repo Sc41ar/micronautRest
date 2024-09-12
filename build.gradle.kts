@@ -58,6 +58,11 @@ tasks.jar {
         attributes["Main-Class"] = "com.sc41ar.ApplicationKt"
     }
 }
+tasks.shadowJar {
+    manifest {
+        attributes["Main-Class"] = "com.sc41ar.ApplicationKt"
+    }
+}
 
 
 graalvmNative.toolchainDetection = false

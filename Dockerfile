@@ -7,6 +7,6 @@ FROM eclipse-temurin:21
 WORKDIR /usr/src/micronaut
 
 # Копирование файлов из build context
-COPY ./build/libs/*-all-optimized.jar app.jar
+COPY ./build/libs/*-all.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "./app.jar"]
